@@ -17,12 +17,7 @@ class AddClientesTable extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('telefono');
-            $table->string('email');
-            $table->string('direccion');
-            $table->string('ciudad');
-            $table->string('estado');
-            $table->string('codifo_postal');
-            $table->string('pais');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }

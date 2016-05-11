@@ -15,9 +15,8 @@ class AddPedidosTable extends Migration
         Schema::create('pedidos', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fechapedido');
-                       $table->string('status');
+                       $table->enum('status', ['Pendiente','Impreso'])->default('Pendiente');
                        $table->binary('archivo');
-                       $table->date('fecha_impresion');
 
                        $table->integer('cliente_id')->unsigned();
                        $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');

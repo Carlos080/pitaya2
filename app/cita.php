@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class cita extends Model
 {
     protected $table = "citas";
-    protected $fillable = ['fecha_cita', 'hora_cita', 'fecha_solicitud', 'cliente_id'];
+    protected $fillable = ['fecha_solicitud','id_cliente'];
 
     public function cliente()
     {
-      return this->belongsTo('pitaya\cliente');
+      return $this->belongsTo('pitaya\cliente');
     }
 }
