@@ -24,25 +24,28 @@ class citacontroller extends Controller
         $cliente = new cliente($request->all());
         $correo = $cliente->email;/*Aqui se obtiene el correo del usuario ParentIterator
         realizar una comparacion y no alla repeticoion de datos*/
-        $consulta = cliente::where('email', $correo)->get(['email']);//haciendo la consulta de campos
-        //$validacion = ($consulta -> email);
-        //dd($consulta);
-        //$validacion = new cliente->get();
-        //dd($validacion);
-        //$cliente->save();
 
-        $validacion = $consulta[0]->email;
-        dd($validacion);
-/*
+        $consulta = cliente::where('email', $correo)->get(['id','email']);//haciendo la consulta de campos
+        //dd($consulta[0]->email);
+        if(($consulta->all()) == null)
+        {
+          $cliente->save();
+          $consulta = cliente::where('email', $correo)->get(['id','email']);
+          $consulta[0]->email;
+        }
+        else
+        {
+          $consulta[0]->id;
+        }
+
+
       $date=Carbon::now();
       $date = $date->format('y-m-d');
 
       $cita = new cita();
       $cita -> fecha_solicitud = $date;
-      $cita->cliente_id = 5;
-      //dd($cita, $cliente);
-      $cliente->save();
+      $cita->cliente_id = $consulta[0]->id;
       $cita->save();
-*/
+
     }
 }
