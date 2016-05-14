@@ -20,19 +20,32 @@ class impcontroller extends Controller
 //Queda pendiente el guardado de imagen- y guradados de datos en la tabla pedidos
     public function store(Request $request)
     {
-      //dd($request->all());
       $cliente = new cliente($request->all());
-      $cliente->save();
+      $correo = $cliente->email;/*Aqui se obtiene el correo del usuario ParentIterator
+      realizar una comparacion y no alla repeticoion de datos*/
 
-      $pedido = new pedido($request->all());
-      //\Storage::disk('local') -> put(\File::get($pedido));
-      /*$date=Carbon::now();
+      $consulta = cliente::where('email', $correo)->get(['id','email']);//haciendo la consulta de campos
+      //dd($consulta[0]->email);
+      if(($consulta->all()) == null)
+      {
+        $cliente->save();
+        $consulta = cliente::where('email', $correo)->get(['id','email']);
+        $consulta[0]->email;
+      }
+      else
+      {
+        $consulta[0]->id;
+      }
+
+      $date=Carbon::now();
       $date = $date->format('y-m-d');
-      $pedido -> fechapedido = $date;
-      $pedido -> archivo = $request['archivo'];
-      $pedido -> status = 'Pediente';
-      //$pedido -> id_cliente = 2;//dd($pedido);
-      //dd($pedido);
-      $pedido -> save();*/
+
+      $pedido = new pedido();
+      $pedido->fechapedido = $date;
+      //$pedido->status = 'Pediente'; Se deshabilita ya que en la base de datos se indica que sera un campo por defecto.
+      $pedido->archivo= $request['archivo'];
+      $pedido->cliente_id = $consulta[0]->id;
+      $pedido->save();
+
     }
 }
